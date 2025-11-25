@@ -1,0 +1,317 @@
+
+:root{
+  --bg:#f6f7fb;
+  --text:#0e1726;
+  --muted:#6b7280;
+  --primary:#0b5ed7;
+  --primary-2:#0a58ca;
+  --danger:#b11116;
+  --green:#14a37f;
+  --card:#fff;
+  --border:#e5e7eb;
+  --container:1120px;
+  --gutter:24px;
+  --r:14px;
+  --shadow:0 10px 24px rgba(0,0,0,.08);
+  --nav-grad: linear-gradient(90deg, #0d3b66 0%, #0d3b66 55%, #7a0a0a 100%);
+}
+
+
+/*  Diseño y tipografia  */
+
+*{box-sizing:border-box}                    /* Hace que width/height incluyan padding y border (layout más predecible) */
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;color:var(--text);background:var(--bg)}
+/* Quita el margen por defecto del body, define la familia tipográfica y usa variables para color de texto y fondo */
+
+a{text-decoration:none;color:inherit}       /* Quita subrayado a los enlaces y hereda el color del texto del padre */
+img{max-width:100%;display:block;height:auto}
+/* Evita que las imágenes se desborden del contenedor, las hace block para eliminar “gaps” y mantiene proporción */
+
+.container{width:min(100% - var(--gutter)*2, var(--container));margin-inline:auto}
+/* Contenedor centrado: usa el menor entre ancho máximo (--container) y el 100% menos gutters laterales */
+
+.section{padding:48px 0}                    /* Espaciado vertical estándar para secciones (arriba y abajo) */
+
+.row{display:flex;gap:12px}                 /* Utilidad de fila con flex y separación uniforme entre hijos */
+.row.between{justify-content:space-between} /* Distribuye elementos a extremos opuestos (izq/der) */
+.row.center-y{align-items:center}           /* Alinea verticalmente los hijos al centro en el eje Y */
+
+.grid-2{display:grid;grid-template-columns:1fr;gap:24px}
+/* Grid de 2 columnas “colapsado” a 1 columna por defecto (móvil). Gap entre celdas de 24px */
+
+.grid-3{display:grid;grid-template-columns:1fr;gap:24px}
+/* Grid de 3 columnas que en móvil inicia en 1 columna, con 24px de separación */
+
+@media(min-width:900px){
+  .grid-2{grid-template-columns:1fr 1fr}   /* En pantallas ≥900px, .grid-2 se convierte en dos columnas */
+  .grid-3{grid-template-columns:280px 1fr 1fr} 
+  /* En pantallas ≥900px, .grid-3: primera columna fija de 280px y dos columnas flexibles */
+}
+
+.gap-3{gap:12px}.gap-6{gap:24px}.gap-8{gap:32px}
+/* Utilidades de espaciado entre hijos para contenedores con display grid/flex */
+
+.stack-2>*+*{margin-top:12px}.stack-3>*+*{margin-top:20px}
+/* Stacks verticales: añade margen-top solo a los elementos que siguen a otro (separación limpia en columnas) */
+
+.h1{font-size:40px;font-weight:800;letter-spacing:-.02em}
+/* Estilo de título principal: tamaño 40px, peso muy grueso y tracking negativo para compactar letras */
+
+.h2{font-size:28px;font-weight:700}        /* Título de segundo nivel: 28px, bold */
+.h3{font-size:20px;font-weight:700}        /* Título de tercer nivel: 20px, bold */
+.lead{color:var(--muted);font-size:18px}    /* Texto destacado/intro con color atenuado y 18px */
+.price{font-weight:700}                     /* Precio en negrita para resaltar */
+
+.text-col { margin-top: 100px; }            /* Sube/baja el bloque de texto dentro del hero ajustando el margen superior */
+
+.title-right { 
+  text-align: right;                        /* Alinea a la derecha solo el título (o el elemento con esta clase) */
+}
+.center-x { justify-content: center; }      /* Centra horizontalmente los elementos hijos en un contenedor flex */
+
+
+
+
+
+
+/* Barra superior */
+.topbar{
+  position:sticky; top:0; z-index:50;           /* Barra fija al hacer scroll, pegada arriba y por encima de otros elementos */
+  background:var(--nav-grad);                    /* Fondo con el degradado definido en la variable --nav-grad */
+  color:#fff;                                    /* Texto en blanco dentro de la topbar */
+  border-bottom:4px solid #7a0a0a;               /* Línea inferior gruesa (rojo vino) para separar visualmente */
+}
+
+.brand{
+  display:flex; align-items:center;              /* Contenedor del logo/marca en flex, centrado vertical */
+  font-weight:800;                               /* Marca en negrita extra para presencia */
+}
+
+.brand-mark{
+  display:grid; place-items:center;              /* Caja del ícono: grid para centrar contenido en ambos ejes */
+  width:36px; height:36px;                       /* Tamaño del recuadro del ícono */
+  border-radius:6px;                             /* Esquinas redondeadas del ícono */
+  background:#0d1b2a; color:#fff;                /* Fondo azul oscuro y texto blanco en el ícono */
+  border:2px solid #fff;                         /* Borde blanco para contraste sobre el degradado */
+}
+
+.nav-links a{
+  color:#dbeafe;                                 /* Enlaces del menú en celeste claro */
+  padding:12px;                                  /* Zona clicable cómoda alrededor del texto */
+}
+
+.badge{
+  display:inline-grid; place-items:center;       /* Badge como cápsula, centrando el número dentro */
+  min-width:18px; height:18px;                   /* Tamaño mínimo para que se vea como pastilla redonda */
+  font-size:12px;                                /* Texto pequeño (conteo del carrito, por ejemplo) */
+  border-radius:999px;                           /* Totalmente redondo (pastilla) */
+  background:#fff; color:#111;                   /* Fondo blanco, texto oscuro para legibilidad */
+  padding:0 4px;                                 /* Relleno horizontal para números de 1–2 dígitos */
+  margin-left:6px;                               /* Separación respecto al texto/botón adyacente */
+}
+
+
+
+
+/* Tarjetas */
+.card{
+  background:var(--card);                /* Color de fondo de la tarjeta (controlado por variable) */
+  border:1px solid var(--border);        /* Borde sutil para delimitar la tarjeta */
+  border-radius:var(--r);                /* Esquinas redondeadas según el radio global */
+  padding:16px;                          /* Relleno interno para que el contenido respire */
+  box-shadow:var(--shadow);              /* Sombra para dar sensación de elevación */
+}
+
+.outline-red{
+  border:3px solid var(--danger)         /* Variante con borde rojo grueso (resalta la tarjeta) */
+}
+
+/* Botones */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; /* Botón como flex para centrar contenido (icono+texto) */
+  padding:10px 16px;                                              /* Área clickeable cómoda */
+  border-radius:10px;                                             /* Esquinas redondeadas del botón */
+  border:1px solid var(--border);                                 /* Borde sutil */
+  background:#fff;                                                /* Fondo blanco por defecto */
+  font-weight:600;                                                /* Semibold para presencia del texto */
+  cursor:pointer;                                                 /* Cursor de “mano” al pasar */
+}
+.btn:hover{ transform:translateY(-1px) }                          /* Micro-animación: se “eleva” 1px al hover */
+
+.btn--primary{
+  background:var(--primary);                                      /* Color principal (variable) */
+  border-color:var(--primary-2);                                  /* Borde acorde al primario */
+  color:#fff;                                                     /* Texto blanco para contraste */
+}
+.btn--primary:hover{ background:var(--primary-2) }                /* Tono más oscuro al hover */
+
+.btn--secondary{
+  background:var(--green);                                        /* Botón secundario en verde */
+  border-color:#118e6e;                                           /* Borde en verde más oscuro */
+  color:#fff;                                                     /* Texto blanco */
+}
+
+.btn--ghost{
+  background:transparent;                                         /* Botón fantasma: sin fondo */
+  border-color:#cbd5e1;                                           /* Borde gris claro */
+  color:#fff;                                                     /* Texto blanco (pensado para fondos oscuros) */
+}
+
+.input{
+  width:100%; max-width:320px;                                    /* Inputs fluidos con tope de 320px */
+  padding:10px 12px;                                              /* Relleno interno */
+  border:1px solid #cbd5e1;                                       /* Borde gris claro */
+  border-radius:10px;                                             /* Esquinas redondeadas */
+}
+
+.footer{
+  border-top:1px solid #e5e7eb;                                   /* Línea superior separadora */
+  padding:24px 0;                                                 /* Espaciado vertical */
+  margin-top:24px;                                                /* Respiración respecto al contenido anterior */
+}
+
+.muted{ color:var(--muted) }                                      /* Texto atenuado (subtítulos, labels, hints) */
+
+.hero{ padding:48px 0 24px }                                      /* Espaciado superior grande y menor inferior para el hero */
+
+.logo-script{ max-width:260px }                                    /* Limita el ancho del logo tipo “script” */
+
+.avatar{
+  width:96px; height:96px;                                        /* Tamaño del avatar */
+  border-radius:999px;                                            /* Forma circular */
+  background:#b91c1c;                                             /* Fondo rojo vino */
+  border:6px solid #fff;                                          /* Aro blanco alrededor */
+  box-shadow:var(--shadow);                                       /* Sombra para elevarlo */
+}
+.avatar.small{ width:64px; height:64px }                           /* Variante pequeña del avatar */
+
+.list-unstyled{ list-style:none; padding:0; margin:0 }             /* Lista sin viñetas ni espacios por defecto */
+
+.item{
+  display:grid; grid-template-columns:1fr auto;                    /* Ítem con dos columnas: contenido y acciones */
+  gap:12px; align-items:center;                                    /* Separación y alineación vertical centrada */
+  padding:8px 0;                                                   /* Espaciado vertical */
+  border-bottom:1px dashed #e5e7eb;                                /* Separador punteado entre ítems */
+}
+.item:last-child{ border-bottom:0 }                                /* Quita el borde al último ítem */
+
+.table{ width:100%; border-collapse:collapse }                     /* Tabla a ancho completo, sin doble borde */
+
+.table th,.table td{
+  padding:10px;                                                    /* Espaciado interno de celdas */
+  border-bottom:1px solid #eee;                                    /* Línea separadora horizontal */
+  text-align:left;                                                 /* Alineación a la izquierda */
+}
+.table th{
+  text-transform:uppercase;                                        /* Encabezados en mayúsculas */
+  font-size:12px;                                                  /* Tamaño pequeño */
+  letter-spacing:.04em;                                            /* Espaciado entre letras para legibilidad */
+  color:#6b7280;                                                   /* Color gris para diferenciar del contenido */
+}
+
+.center{ text-align:center }                                       /* Centra el texto (útil para mensajes/headers) */
+
+
+/* Redes Sociales */
+.social { display:flex; gap:12px; justify-content:center; margin-top:16px; }
+.social .ico { width:22px; height:22px; color:#0d1b2a; transition:transform .15s ease, color .15s ease; }
+.social a:hover .ico { transform:translateY(-1px); color:var(--primary); }
+
+/*  Layout con footer pegado al fondo  */
+html, body { height: 100%; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+.footer { margin-top: auto; }
+
+
+/* ====== Auth layouts (centrado bonito) ====== */
+.auth-wrap{
+  min-height: calc(100vh - 120px); /* ocupa alto disponible, descuenta header/footer aprox */
+  display: grid;
+  place-items: center;             /* centro absoluto */
+  padding: 24px 24px 120px;
+}
+
+.auth-card{
+  width: min(100%, 520px);         /* tope de ancho */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+/* Títulos centrados, campos alineados a la izquierda */
+.auth-card .h2{ text-align:center; margin-bottom: 12px; }
+
+/* Grilla del formulario (responsive) */
+.form-grid{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px){
+  .form-grid--2{ grid-template-columns: 1fr 1fr; }
+}
+
+/* Inputs full-width dentro del form */
+.auth-card .input{ width: 100%; }
+
+/* Mensaje de error de validación simple */
+.err{ color:#b11116; font-size:13px; margin-top:4px; display:none; }
+
+
+.sep{
+  display:flex; align-items:center; gap:12px; margin:10px 0;
+}
+.sep::before, .sep::after{
+  content:""; height:1px; flex:1; background:#e5e7eb;
+}
+
+
+html.a11y-contrast{ filter: contrast(1.2) saturate(1.1); }
+html.a11y-font{ font-size: 112%; }
+html.a11y-dys{ font-family: 'OpenDyslexic', Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif; }
+html.a11y-underline a{ text-decoration: underline !important; }
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+html.a11y-motion *{ animation: none !important; transition: none !important; }
+
+/* ===== A11y: clases globales activadas por los toggles ===== */
+
+/* Modo lectura: oculta navegación y pie, centra el contenido */
+html.a11y-reader .topbar,
+html.a11y-reader .footer,
+html.a11y-reader .social { display: none !important; }
+html.a11y-reader main { max-width: 72ch; margin: 0 auto; }
+html.a11y-reader body { background: #fff; }
+
+/* Foco visible reforzado */
+html.a11y-focus :focus-visible {
+  outline: 3px solid #0b5ed7 !important;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Evitar justificado */
+html.a11y-left p,
+html.a11y-left li,
+html.a11y-left .lead { text-align: left !important; }
+
+/* Tamaño de fuente y espaciados controlados por variables */
+:root{
+  --a11y-font-scale: 100%;
+  --a11y-line: 1.5;
+  --a11y-letter: 0px;
+}
+html { font-size: var(--a11y-font-scale); }
+body { line-height: var(--a11y-line); letter-spacing: var(--a11y-letter); }
+
+/* Ya tenías estas (reconfirma que existen) */
+html.a11y-contrast{ filter: contrast(1.2) saturate(1.1); }
+html.a11y-font{ font-size: 112%; } /* (puedes quitarla si usarás el slider) */
+html.a11y-dys{ font-family: 'OpenDyslexic', Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif; }
+html.a11y-underline a{ text-decoration: underline !important; }
+@media (prefers-reduced-motion: reduce){ *{ animation: none !important; transition: none !important; } }
+html.a11y-motion *{ animation: none !important; transition: none !important; }
+
