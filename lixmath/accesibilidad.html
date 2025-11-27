@@ -1,396 +1,430 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Accesibilidad — LixMath</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accesibilidad — LixMath</title>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
-  <!-- UserWay Accessibility Widget, boton de accesibilidad para discapasitados -->
-  <script src="https://cdn.userway.org/widget.js" data-account="6w8CiwQqVZ"></script>
+    <!-- UserWay Accessibility Widget, boton de accesibilidad para discapasitados -->
+    <script src="https://cdn.userway.org/widget.js" data-account="6w8CiwQqVZ"></script>
   
-  <!-- Tu CSS global -->
-  <link rel="stylesheet" href="./styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tu CSS global -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Estilos locales mínimos para esta página -->
-  <style>
-    .a11y-wrap{ max-width: 880px; margin: 32px auto; padding: 0 16px; }
-    .card.section { padding: 20px; margin-top: 16px; }
-    .controls label{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 0; border-bottom:1px dashed #e5e7eb;
-      gap: 12px;
-    }
-    .controls label:last-child{ border-bottom:0; }
-    .hint{ color: var(--muted); font-size: 14px; }
-    .row.wrap{ flex-wrap: wrap; }
+    <!-- Estilos locales mínimos para esta página -->
+    <style>
+      .a11y-wrap{ max-width: 880px; margin: 32px auto; padding: 0 16px; }
+      .card.section { padding: 20px; margin-top: 16px; }
+      .controls label{
+        display:flex; align-items:center; justify-content:space-between;
+        padding:10px 0; border-bottom:1px dashed #e5e7eb;
+        gap: 12px;
+      }
+      .controls label:last-child{ border-bottom:0; }
+      .hint{ color: var(--muted); font-size: 14px; }
+      .row.wrap{ flex-wrap: wrap; }
 
-    /* Panel/guías específicas de esta página */
-    .kv{ display:grid; grid-template-columns: 1fr auto; gap: 8px; align-items:center; }
-    .kv small{ color:var(--muted); }
+      /* Panel/guías específicas de esta página */
+      .kv{ display:grid; grid-template-columns: 1fr auto; gap: 8px; align-items:center; }
+      .kv small{ color:var(--muted); }
 
-    /* Reading guide (banda de enfoque de línea) */
-    .reading-guide{
-      position: fixed; left: 0; right: 0; top: 0;
-      height: 48px; pointer-events: none;
-      background: rgba(255,223,128,.28);
-      z-index: 59; display: none;
-    }
-    html.a11y-guide .reading-guide{ display:block; }
+      /* Reading guide (banda de enfoque de línea) */
+      .reading-guide{
+        position: fixed; left: 0; right: 0; top: 0;
+        height: 48px; pointer-events: none;
+        background: rgba(255,223,128,.28);
+        z-index: 59; display: none;
+      }
+      html.a11y-guide .reading-guide{ display:block; }
 
-    /* Cursor grande (si pones tu svg, apunta a assets) */
-    html.a11y-cursor{ cursor: url('./assets/cursor-big.svg') 0 0, auto; }
-    html.a11y-hit a, html.a11y-hit button{ min-height:44px; min-width:44px; }
+      /* Cursor grande (si pones tu svg, apunta a assets) */
+      html.a11y-cursor{ cursor: url('./assets/cursor-big.svg') 0 0, auto; }
+      html.a11y-hit a, html.a11y-hit button{ min-height:44px; min-width:44px; }
 
-    /* Tema bajo brillo */
-    html.a11y-dim{ filter: brightness(.92); }
+      /* Tema bajo brillo */
+      html.a11y-dim{ filter: brightness(.92); }
 
-    /* Foco visible reforzado cuando el toggle esté activo */
-    html.a11y-focus :focus-visible{
-      outline: 3px solid #0b5ed7 !important;
-      outline-offset: 2px; border-radius: 6px;
-    }
+      /* Foco visible reforzado cuando el toggle esté activo */
+      html.a11y-focus :focus-visible{
+        outline: 3px solid #0b5ed7 !important;
+        outline-offset: 2px; border-radius: 6px;
+      }
 
-    /* Modo lectura: oculta navegación/social/footer y centra main */
-    html.a11y-reader .topbar,
-    html.a11y-reader .footer,
-    html.a11y-reader .social { display: none !important; }
-    html.a11y-reader main { max-width: 72ch; margin: 0 auto; }
-    html.a11y-reader body { background: #fff; }
+      /* Modo lectura: oculta navegación/social/footer y centra main */
+      html.a11y-reader .topbar,
+      html.a11y-reader .footer,
+      html.a11y-reader .social { display: none !important; }
+      html.a11y-reader main { max-width: 72ch; margin: 0 auto; }
+      html.a11y-reader body { background: #fff; }
 
-    /* Evitar texto justificado */
-    html.a11y-left p,
-    html.a11y-left li,
-    html.a11y-left .lead{ text-align: left !important; }
+      /* Evitar texto justificado */
+      html.a11y-left p,
+      html.a11y-left li,
+      html.a11y-left .lead{ text-align: left !important; }
 
-    /* Variables para sliders */
-    :root{
-      --a11y-font-scale: 100%;
-      --a11y-line: 1.5;
-      --a11y-letter: 0px;
-    }
-    html{ font-size: var(--a11y-font-scale); }
-    body{ line-height: var(--a11y-line); letter-spacing: var(--a11y-letter); }
+      /* Variables para sliders */
+      :root{
+        --a11y-font-scale: 100%;
+        --a11y-line: 1.5;
+        --a11y-letter: 0px;
+      }
+      html{ font-size: var(--a11y-font-scale); }
+      body{ line-height: var(--a11y-line); letter-spacing: var(--a11y-letter); }
 
-    /* Ya soportadas en tu styles.css; aquí las reforzamos por si acaso */
-    html.a11y-contrast{ filter: contrast(1.2) saturate(1.1); }
-    html.a11y-underline a{ text-decoration: underline !important; }
-    @media (prefers-reduced-motion: reduce){
-      *{ animation: none !important; transition: none !important; }
-    }
-    html.a11y-motion *{ animation: none !important; transition: none !important; }
-    html.a11y-dys{
-      font-family: 'OpenDyslexic', Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
-    }
+      /* Ya soportadas en tu styles.css; aquí las reforzamos por si acaso */
+      html.a11y-contrast{ filter: contrast(1.2) saturate(1.1); }
+      html.a11y-underline a{ text-decoration: underline !important; }
+      @media (prefers-reduced-motion: reduce){
+        *{ animation: none !important; transition: none !important; }
+      }
+      html.a11y-motion *{ animation: none !important; transition: none !important; }
+      html.a11y-dys{
+        font-family: 'OpenDyslexic', Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
+      }
 
-    /* Enlace “saltar al contenido” (visible al tabular) */
-    .skip{ position: absolute; left: -9999px; top: 16px; background:#fff; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; box-shadow: var(--shadow); }
-    .skip:focus{ left: 16px; z-index: 1000; }
-  </style>
-</head>
-<body>
-  <!-- Saltar al contenido -->
-  <a class="skip" href="#contenido">Saltar al contenido</a>
+      /* Enlace “saltar al contenido” (visible al tabular) */
+      .skip{ position: absolute; left: -9999px; top: 16px; background:#fff; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; box-shadow: var(--shadow); }
+      .skip:focus{ left: 16px; z-index: 1000; }
+    </style>
+  </head>
+  <body>
 
-  <!-- Topbar (igual a tus otras páginas) -->
-  <header class="topbar">
-    <div class="container row between center-y">
-      <a class="brand" href="./index.html"><span class="brand-mark">LM</span></a>
-      <nav class="nav-links hide-on-mobile">
-        <a href="./index.html">Inicio</a>
-        <a href="./catalogo.html">Plantillas</a>
-        <a href="./suscripcion.html">Suscripción</a>
-      </nav>
-      <div class="row gap-3 center-y">
-        <a href="./login.html">Login</a>
-        <a class="btn btn--primary" href="./carrito.html">Carrito <span class="badge" data-cart-count style="display:none">0</span></a>
-      </div>
-    </div>
-  </header>
+    <!-- Saltar al contenido -->
+    <a class="skip" href="#contenido">Saltar al contenido</a>
 
-  <main id="contenido" class="a11y-wrap">
-    <h1 class="h2">Ajustes de accesibilidad</h1>
-    <p class="hint">Activa las opciones que necesites. Tus preferencias se guardan en este navegador y se aplican en todo el sitio.</p>
+    <!-- Topbar (igual a tus otras páginas) -->
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top"
+        style="background: var(--nav-grad); border-bottom:4px solid #7a0a0a;">
+      <div class="container">
+        <a class="brand" href="./index.html">
+          <span class="brand-mark">LM</span>
+        </a>
 
-    <!-- VISIÓN -->
-    <section class="card section">
-      <h2 class="h3">Visión</h2>
-      <div class="controls">
-        <label>Alto contraste <input type="checkbox" id="a11y-contrast"></label>
-        <label>Texto grande (slider abajo) <input type="checkbox" id="a11y-font" disabled title="Usa el control de tamaño para mayor precisión"></label>
-        <label>Fuente legible (dislexia) <input type="checkbox" id="a11y-dys"></label>
-        <label>Subrayar todos los enlaces <input type="checkbox" id="a11y-underline"></label>
-        <label>Reducir animaciones <input type="checkbox" id="a11y-motion"></label>
-        <label>Tema bajo brillo <input type="checkbox" id="a11y-dim"></label>
-        <label>Cursor grande <input type="checkbox" id="a11y-cursor"></label>
-      </div>
-      <p class="hint">Para el cursor grande puedes usar <code>./assets/cursor-big.svg</code> (añádelo a tu proyecto).</p>
-    </section>
+        <!-- Botón hamburguesa -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+                aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- LECTURA / COMPRENSIÓN -->
-    <section class="card section">
-      <h2 class="h3">Lectura y comprensión</h2>
-      <div class="controls">
-        <label>Modo lectura (oculta menús y pie) <input type="checkbox" id="a11y-reader"></label>
-        <label>Foco visible (navegación con teclado) <input type="checkbox" id="a11y-focus"></label>
-        <label>Evitar texto justificado (alinear a la izquierda) <input type="checkbox" id="a11y-left"></label>
-        <label>Guía de lectura (banda que sigue el cursor) <input type="checkbox" id="a11y-guide"></label>
-      </div>
-      <div class="row gap-6 wrap" style="margin-top:8px;">
-        <div class="kv">
-          <label for="a11y-font-scale">Tamaño de texto</label>
-          <div>
-            <input type="range" id="a11y-font-scale" min="100" max="150" step="5" value="100" style="width:220px">
-            <small id="a11y-font-scale-out">100%</small>
-          </div>
-        </div>
-        <div class="kv">
-          <label for="a11y-line">Espaciado de líneas</label>
-          <div>
-            <input type="range" id="a11y-line" min="130" max="200" step="5" value="150" style="width:220px">
-            <small id="a11y-line-out">1.50</small>
-          </div>
-        </div>
-        <div class="kv">
-          <label for="a11y-letter">Espaciado de letras</label>
-          <div>
-            <input type="range" id="a11y-letter" min="0" max="8" step="1" value="0" style="width:220px">
-            <small id="a11y-letter-out">0 px</small>
-          </div>
+        <!-- Bloque colapsable (DEBE estar dentro del <nav> y SIN clase .show por defecto) -->
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="./index.html">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="./como-usar.html">¿Cómo usar?</a></li>
+            <li class="nav-item"><a class="nav-link" href="./catalogo.html">Plantillas</a></li>
+            <li class="nav-item"><a class="nav-link" href="./suscripcion.html">Suscripción</a></li>
+
+            <div class="d-flex gap-2 ms-lg-3">
+              <li class="nav-link text-white-50" href="./login.html">Login</a></li>
+              <li class="btn btn--primary" href="./carrito.html">Carrito <span class="badge" data-cart-count style="display:none">0</span></li>
+            </div>
+          </ul>
         </div>
       </div>
-      <p class="hint">Estos ajustes ayudan en dislexia, TDAH y baja visión.</p>
-      <div class="row gap-3" style="margin-top:8px;">
-        <button id="a11y-read" class="btn btn--secondary">Leer esta página en voz alta</button>
-        <button id="a11y-reset" class="btn">Restablecer ajustes</button>
-      </div>
-      <p class="hint">La lectura en voz alta usa la Web Speech API del navegador (si está disponible).</p>
-    </section>
+    </nav>
 
-    <!-- MOTRICIDAD / TECLADO -->
-    <section class="card section">
-      <h2 class="h3">Motricidad y teclado</h2>
-      <div class="controls">
-        <label>Áreas clicables más grandes <input type="checkbox" id="a11y-hit"></label>
-      </div>
-      <p class="hint">Amplía el tamaño mínimo de botones y enlaces para facilitar clics.</p>
-    </section>
 
-    <!-- IDIOMA -->
-    <section class="card section">
-      <h2 class="h3">Idioma de la interfaz</h2>
-      <div class="controls">
-        <label style="gap:12px; width:100%;">
-          Seleccionar idioma
-          <select id="a11y-lang" class="input" style="max-width:240px;">
-            <option value="es-ES">Español</option>
-            <option value="en-US">English</option>
-            <option value="pt-BR">Português</option>
-            <option value="fr-FR">Français</option>
-          </select>
-        </label>
-      </div>
-      <p class="hint">Establece el atributo <code>lang</code> del documento para lectores de pantalla. (Traducción automática: la conectamos luego.)</p>
-    </section>
+    <main id="contenido" class="a11y-wrap">
+      <h1 class="h2">Ajustes de accesibilidad</h1>
+      <p class="hint">Activa las opciones que necesites. Tus preferencias se guardan en este navegador y se aplican en todo el sitio.</p>
 
-    <!-- MULTIMEDIA (nota de subtítulos/transcripciones) -->
-    <section class="card section">
-      <h2 class="h3">Multimedia</h2>
-      <p class="hint">Cuando uses videos, agrega pistas de subtítulos (<code>&lt;track kind="captions" ... default&gt;</code>) y una transcripción en texto con <code>&lt;details&gt;</code>.</p>
-    </section>
+      <!-- VISIÓN -->
+      <section class="card section">
+        <h2 class="h3">Visión</h2>
+        <div class="controls">
+          <label>Alto contraste <input type="checkbox" id="a11y-contrast"></label>
+          <label>Texto grande (slider abajo) <input type="checkbox" id="a11y-font" disabled title="Usa el control de tamaño para mayor precisión"></label>
+          <label>Fuente legible (dislexia) <input type="checkbox" id="a11y-dys"></label>
+          <label>Subrayar todos los enlaces <input type="checkbox" id="a11y-underline"></label>
+          <label>Reducir animaciones <input type="checkbox" id="a11y-motion"></label>
+          <label>Tema bajo brillo <input type="checkbox" id="a11y-dim"></label>
+          <label>Cursor grande <input type="checkbox" id="a11y-cursor"></label>
+        </div>
+        <p class="hint">Para el cursor grande puedes usar <code>./assets/cursor-big.svg</code> (añádelo a tu proyecto).</p>
+      </section>
 
-    <!-- TRADUCCIÓN -->
-    <section class="card section">
-      <h2 class="h3">Traducción de la interfaz</h2>
-      <div class="controls">
-        <label style="gap:12px; width:100%;">
-          Idioma destino
-          <select id="i18n-target" class="input" style="max-width:240px;">
-            <option value="en-US">English</option>
-            <option value="pt-BR">Português</option>
-            <option value="fr-FR">Français</option>
-          </select>
-        </label>
-      </div>
-      <div class="row gap-3" style="margin-top:8px;">
-        <button class="btn btn--primary" id="i18n-translate">Traducir esta página</button>
-        <button class="btn" id="i18n-reset">Volver a español</button>
-      </div>
-      <p class="hint">No enviaremos datos sensibles. Solo textos visibles marcados para traducción.</p>
-    </section>
+      <!-- LECTURA / COMPRENSIÓN -->
+      <section class="card section">
+        <h2 class="h3">Lectura y comprensión</h2>
+        <div class="controls">
+          <label>Modo lectura (oculta menús y pie) <input type="checkbox" id="a11y-reader"></label>
+          <label>Foco visible (navegación con teclado) <input type="checkbox" id="a11y-focus"></label>
+          <label>Evitar texto justificado (alinear a la izquierda) <input type="checkbox" id="a11y-left"></label>
+          <label>Guía de lectura (banda que sigue el cursor) <input type="checkbox" id="a11y-guide"></label>
+        </div>
+        <div class="row gap-6 wrap" style="margin-top:8px;">
+          <div class="kv">
+            <label for="a11y-font-scale">Tamaño de texto</label>
+            <div>
+              <input type="range" id="a11y-font-scale" min="100" max="150" step="5" value="100" style="width:220px">
+              <small id="a11y-font-scale-out">100%</small>
+            </div>
+          </div>
+          <div class="kv">
+            <label for="a11y-line">Espaciado de líneas</label>
+            <div>
+              <input type="range" id="a11y-line" min="130" max="200" step="5" value="150" style="width:220px">
+              <small id="a11y-line-out">1.50</small>
+            </div>
+          </div>
+          <div class="kv">
+            <label for="a11y-letter">Espaciado de letras</label>
+            <div>
+              <input type="range" id="a11y-letter" min="0" max="8" step="1" value="0" style="width:220px">
+              <small id="a11y-letter-out">0 px</small>
+            </div>
+          </div>
+        </div>
+        <p class="hint">Estos ajustes ayudan en dislexia, TDAH y baja visión.</p>
+        <div class="row gap-3" style="margin-top:8px;">
+          <button id="a11y-read" class="btn btn--secondary">Leer esta página en voz alta</button>
+          <button id="a11y-reset" class="btn">Restablecer ajustes</button>
+        </div>
+        <p class="hint">La lectura en voz alta usa la Web Speech API del navegador (si está disponible).</p>
+      </section>
 
-    <!-- SUBTÍTULOS / ASR -->
-    <section class="card section">
-      <h2 class="h3">Subtítulos desde audio/video</h2>
-      <div class="stack-2">
-        <input type="file" id="asr-file" accept="audio/*,video/*">
-        <button class="btn btn--secondary" id="asr-upload">Generar subtítulos (VTT)</button>
-        <details>
-          <summary>Transcripción</summary>
-          <pre id="asr-text" style="white-space:pre-wrap;"></pre>
-        </details>
-      </div>
-      <p class="hint">Genera un archivo .vtt y te lo devuelve listo para usar en &lt;video&gt;.</p>
-    </section>
+      <!-- MOTRICIDAD / TECLADO -->
+      <section class="card section">
+        <h2 class="h3">Motricidad y teclado</h2>
+        <div class="controls">
+          <label>Áreas clicables más grandes <input type="checkbox" id="a11y-hit"></label>
+        </div>
+        <p class="hint">Amplía el tamaño mínimo de botones y enlaces para facilitar clics.</p>
+      </section>
+
+      <!-- IDIOMA -->
+      <section class="card section">
+        <h2 class="h3">Idioma de la interfaz</h2>
+        <div class="controls">
+          <label style="gap:12px; width:100%;">
+            Seleccionar idioma
+            <select id="a11y-lang" class="input" style="max-width:240px;">
+              <option value="es-ES">Español</option>
+              <option value="en-US">English</option>
+              <option value="pt-BR">Português</option>
+              <option value="fr-FR">Français</option>
+            </select>
+          </label>
+        </div>
+        <p class="hint">Establece el atributo <code>lang</code> del documento para lectores de pantalla. (Traducción automática: la conectamos luego.)</p>
+      </section>
+
+      <!-- MULTIMEDIA (nota de subtítulos/transcripciones) -->
+      <section class="card section">
+        <h2 class="h3">Multimedia</h2>
+        <p class="hint">Cuando uses videos, agrega pistas de subtítulos (<code>&lt;track kind="captions" ... default&gt;</code>) y una transcripción en texto con <code>&lt;details&gt;</code>.</p>
+      </section>
+
+      <!-- TRADUCCIÓN -->
+      <section class="card section">
+        <h2 class="h3">Traducción de la interfaz</h2>
+        <div class="controls">
+          <label style="gap:12px; width:100%;">
+            Idioma destino
+            <select id="i18n-target" class="input" style="max-width:240px;">
+              <option value="en-US">English</option>
+              <option value="pt-BR">Português</option>
+              <option value="fr-FR">Français</option>
+            </select>
+          </label>
+        </div>
+        <div class="row gap-3" style="margin-top:8px;">
+          <button class="btn btn--primary" id="i18n-translate">Traducir esta página</button>
+          <button class="btn" id="i18n-reset">Volver a español</button>
+        </div>
+        <p class="hint">No enviaremos datos sensibles. Solo textos visibles marcados para traducción.</p>
+      </section>
+
+      <!-- SUBTÍTULOS / ASR -->
+      <section class="card section">
+        <h2 class="h3">Subtítulos desde audio/video</h2>
+        <div class="stack-2">
+          <input type="file" id="asr-file" accept="audio/*,video/*">
+          <button class="btn btn--secondary" id="asr-upload">Generar subtítulos (VTT)</button>
+          <details>
+            <summary>Transcripción</summary>
+            <pre id="asr-text" style="white-space:pre-wrap;"></pre>
+          </details>
+        </div>
+        <p class="hint">Genera un archivo .vtt y te lo devuelve listo para usar en &lt;video&gt;.</p>
+      </section>
     
 
-    <div class="row gap-3" style="margin-top:16px;">
-      <a class="btn" href="./index.html">Volver al inicio</a>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="container row between wrap gap-3">
-      <div class="muted">© 2025 LixMath</div>
-      <div class="row gap-3">
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-        <a href="./accesibilidad.html">Accesibilidad</a>
+      <div class="row gap-3" style="margin-top:16px;">
+        <a class="btn" href="./index.html">Volver al inicio</a>
       </div>
-    </div>
-  </footer>
+    </main>
 
-  <!-- Tu JS global -->
-  <script src="./script.js" defer></script>
+    <footer class="border-top py-3 mt-4">
+      <div class="container">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-between gap-2">
+          <div class="text-muted text-center">© 2025 LixMath</div>
+          <ul class="nav justify-content-center">
+            <li class="nav-item"><a class="nav-link px-2" href="#">Privacidad</a></li>
+            <li class="nav-item"><a class="nav-link px-2" href="#">Términos</a></li>
+            <li class="nav-item"><a class="nav-link px-2" href="./suscripcion.html">Contacto</a></li>
+            <li class="nav-item"><a class="nav-link px-2" href="./accesibilidad.html">Accesibilidad</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginLi = document.querySelector('.navbar li.nav-link.text-white-50');
+      if (loginLi){ loginLi.style.cursor='pointer'; loginLi.addEventListener('click', () => location.href='./login.html'); }
 
-  <!-- Lógica de accesibilidad (esta página) -->
-  <script>
-    // Claves de almacenamiento
-    const PREF_KEY = 'a11y_prefs'; // booleanas (clases)
-    const NUM_KEY  = 'a11y_num';   // numéricas (sliders)
-    const META_KEY = 'a11y_meta';  // meta (lang, etc.)
-
-    const root = document.documentElement;
-
-    // Mapa de toggles => clases
-    const MAP = {
-      'a11y-contrast'  : 'a11y-contrast',
-      // 'a11y-font' desactivada por slider, se deja para compatibilidad
-      'a11y-dys'       : 'a11y-dys',
-      'a11y-underline' : 'a11y-underline',
-      'a11y-motion'    : 'a11y-motion',
-      'a11y-dim'       : 'a11y-dim',
-      'a11y-cursor'    : 'a11y-cursor',
-      'a11y-reader'    : 'a11y-reader',
-      'a11y-focus'     : 'a11y-focus',
-      'a11y-left'      : 'a11y-left',
-      'a11y-guide'     : 'a11y-guide',
-      'a11y-hit'       : 'a11y-hit'
-    };
-
-    // Cargar prefs (booleanas)
-    const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
-    Object.values(MAP).forEach(cls => { if (prefs[cls]) root.classList.add(cls); });
-    Object.entries(MAP).forEach(([id, cls])=>{
-      const el = document.getElementById(id);
-      if(el) el.checked = !!prefs[cls];
+      const cartLi = document.querySelector('.navbar li.btn.btn--primary');
+      if (cartLi){ cartLi.style.cursor='pointer'; cartLi.addEventListener('click', () => location.href='./carrito.html'); }
     });
+    </script>
 
-    // Sliders (numéricas)
-    const nums = JSON.parse(localStorage.getItem(NUM_KEY) || '{}');
-    const fontScale = document.getElementById('a11y-font-scale');
-    const line      = document.getElementById('a11y-line');
-    const letter    = document.getElementById('a11y-letter');
-    const outScale  = document.getElementById('a11y-font-scale-out');
-    const outLine   = document.getElementById('a11y-line-out');
-    const outLetter = document.getElementById('a11y-letter-out');
+    <!-- Tu JS global -->
+    <script src="./script.js" defer></script>
 
-    function applyNums(){
-      if(nums.scale){ root.style.setProperty('--a11y-font-scale', nums.scale + '%'); outScale.textContent = nums.scale + '%'; fontScale.value = nums.scale; }
-      if(nums.line){  const lh = (nums.line/100).toFixed(2); root.style.setProperty('--a11y-line', lh); outLine.textContent = lh; line.value = nums.line; }
-      if(nums.letter!==undefined){ root.style.setProperty('--a11y-letter', nums.letter + 'px'); outLetter.textContent = nums.letter + ' px'; letter.value = nums.letter; }
-    }
-    applyNums();
+    <!-- Lógica de accesibilidad (esta página) -->
+    <script>
+      // Claves de almacenamiento
+      const PREF_KEY = 'a11y_prefs'; // booleanas (clases)
+      const NUM_KEY  = 'a11y_num';   // numéricas (sliders)
+      const META_KEY = 'a11y_meta';  // meta (lang, etc.)
 
-    function saveNums(){
-      localStorage.setItem(NUM_KEY, JSON.stringify(nums));
-    }
+      const root = document.documentElement;
 
-    fontScale.addEventListener('input', ()=>{
-      nums.scale = Number(fontScale.value);
-      root.style.setProperty('--a11y-font-scale', nums.scale + '%');
-      outScale.textContent = nums.scale + '%';
-      saveNums();
-    });
-    line.addEventListener('input', ()=>{
-      nums.line = Number(line.value);
-      const lh = (nums.line/100).toFixed(2);
-      root.style.setProperty('--a11y-line', lh);
-      outLine.textContent = lh;
-      saveNums();
-    });
-    letter.addEventListener('input', ()=>{
-      nums.letter = Number(letter.value);
-      root.style.setProperty('--a11y-letter', nums.letter + 'px');
-      outLetter.textContent = nums.letter + ' px';
-      saveNums();
-    });
+      // Mapa de toggles => clases
+      const MAP = {
+        'a11y-contrast'  : 'a11y-contrast',
+        // 'a11y-font' desactivada por slider, se deja para compatibilidad
+        'a11y-dys'       : 'a11y-dys',
+        'a11y-underline' : 'a11y-underline',
+        'a11y-motion'    : 'a11y-motion',
+        'a11y-dim'       : 'a11y-dim',
+        'a11y-cursor'    : 'a11y-cursor',
+        'a11y-reader'    : 'a11y-reader',
+        'a11y-focus'     : 'a11y-focus',
+        'a11y-left'      : 'a11y-left',
+        'a11y-guide'     : 'a11y-guide',
+        'a11y-hit'       : 'a11y-hit'
+      };
 
-    // Cambios de toggles -> clase en <html> + guardar
-    Object.entries(MAP).forEach(([id, cls])=>{
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.addEventListener('change', ()=>{
-        root.classList.toggle(cls, el.checked);
-        const state = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
-        state[cls] = el.checked;
-        localStorage.setItem(PREF_KEY, JSON.stringify(state));
+      // Cargar prefs (booleanas)
+      const prefs = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
+      Object.values(MAP).forEach(cls => { if (prefs[cls]) root.classList.add(cls); });
+      Object.entries(MAP).forEach(([id, cls])=>{
+        const el = document.getElementById(id);
+        if(el) el.checked = !!prefs[cls];
       });
-    });
 
-    // Idioma (lang)
-    const langSel = document.getElementById('a11y-lang');
-    const meta = JSON.parse(localStorage.getItem(META_KEY) || '{}');
-    if(meta.lang){ langSel.value = meta.lang; root.setAttribute('lang', meta.lang); }
-    langSel.addEventListener('change', ()=>{
-      meta.lang = langSel.value;
-      root.setAttribute('lang', meta.lang);
-      localStorage.setItem(META_KEY, JSON.stringify(meta));
-    });
+      // Sliders (numéricas)
+      const nums = JSON.parse(localStorage.getItem(NUM_KEY) || '{}');
+      const fontScale = document.getElementById('a11y-font-scale');
+      const line      = document.getElementById('a11y-line');
+      const letter    = document.getElementById('a11y-letter');
+      const outScale  = document.getElementById('a11y-font-scale-out');
+      const outLine   = document.getElementById('a11y-line-out');
+      const outLetter = document.getElementById('a11y-letter-out');
 
-    // Lectura en voz alta (Web Speech API)
-    const readBtn = document.getElementById('a11y-read');
-    readBtn?.addEventListener('click', ()=>{
-      const synth = window.speechSynthesis;
-      if(!synth){ alert('Tu navegador no soporta lectura en voz alta.'); return; }
-      synth.cancel();
-      const text = document.body.innerText.replace(/\s+/g,' ').trim().slice(0, 6000);
-      const msg = new SpeechSynthesisUtterance(text);
-      msg.lang = meta.lang || 'es-ES';
-      synth.speak(msg);
-    });
+      function applyNums(){
+        if(nums.scale){ root.style.setProperty('--a11y-font-scale', nums.scale + '%'); outScale.textContent = nums.scale + '%'; fontScale.value = nums.scale; }
+        if(nums.line){  const lh = (nums.line/100).toFixed(2); root.style.setProperty('--a11y-line', lh); outLine.textContent = lh; line.value = nums.line; }
+        if(nums.letter!==undefined){ root.style.setProperty('--a11y-letter', nums.letter + 'px'); outLetter.textContent = nums.letter + ' px'; letter.value = nums.letter; }
+      }
+      applyNums();
 
-    // Reset
-    const resetBtn = document.getElementById('a11y-reset');
-    resetBtn?.addEventListener('click', ()=>{
-      localStorage.removeItem(PREF_KEY);
-      localStorage.removeItem(NUM_KEY);
-      localStorage.removeItem(META_KEY);
-      // quitar clases
-      Object.values(MAP).forEach(cls => root.classList.remove(cls));
-      // reset variables
-      root.style.setProperty('--a11y-font-scale', '100%');
-      root.style.setProperty('--a11y-line', '1.5');
-      root.style.setProperty('--a11y-letter', '0px');
-      // reset UI
-      Object.keys(MAP).forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
-      fontScale.value = 100; outScale.textContent = '100%';
-      line.value = 150; outLine.textContent = '1.50';
-      letter.value = 0; outLetter.textContent = '0 px';
-      if(langSel){ langSel.value = 'es-ES'; root.setAttribute('lang','es-ES'); }
-      alert('Preferencias de accesibilidad restablecidas.');
-    });
+      function saveNums(){
+        localStorage.setItem(NUM_KEY, JSON.stringify(nums));
+      }
 
-    // Reading guide (banda que sigue el cursor)
-    (function(){
-      const guide = document.createElement('div');
-      guide.className = 'reading-guide';
-      document.body.appendChild(guide);
-      document.addEventListener('mousemove', (e)=>{
-        // centra la banda alrededor del cursor
-        guide.style.top = Math.max(0, e.clientY - 24) + 'px';
+      fontScale.addEventListener('input', ()=>{
+        nums.scale = Number(fontScale.value);
+        root.style.setProperty('--a11y-font-scale', nums.scale + '%');
+        outScale.textContent = nums.scale + '%';
+        saveNums();
       });
-    })();
-  </script>
-</body>
+      line.addEventListener('input', ()=>{
+        nums.line = Number(line.value);
+        const lh = (nums.line/100).toFixed(2);
+        root.style.setProperty('--a11y-line', lh);
+        outLine.textContent = lh;
+        saveNums();
+      });
+      letter.addEventListener('input', ()=>{
+        nums.letter = Number(letter.value);
+        root.style.setProperty('--a11y-letter', nums.letter + 'px');
+        outLetter.textContent = nums.letter + ' px';
+        saveNums();
+      });
+
+      // Cambios de toggles -> clase en <html> + guardar
+      Object.entries(MAP).forEach(([id, cls])=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('change', ()=>{
+          root.classList.toggle(cls, el.checked);
+          const state = JSON.parse(localStorage.getItem(PREF_KEY) || '{}');
+          state[cls] = el.checked;
+          localStorage.setItem(PREF_KEY, JSON.stringify(state));
+        });
+      });
+
+      // Idioma (lang)
+      const langSel = document.getElementById('a11y-lang');
+      const meta = JSON.parse(localStorage.getItem(META_KEY) || '{}');
+      if(meta.lang){ langSel.value = meta.lang; root.setAttribute('lang', meta.lang); }
+      langSel.addEventListener('change', ()=>{
+        meta.lang = langSel.value;
+        root.setAttribute('lang', meta.lang);
+        localStorage.setItem(META_KEY, JSON.stringify(meta));
+      });
+
+      // Lectura en voz alta (Web Speech API)
+      const readBtn = document.getElementById('a11y-read');
+      readBtn?.addEventListener('click', ()=>{
+        const synth = window.speechSynthesis;
+        if(!synth){ alert('Tu navegador no soporta lectura en voz alta.'); return; }
+        synth.cancel();
+        const text = document.body.innerText.replace(/\s+/g,' ').trim().slice(0, 6000);
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = meta.lang || 'es-ES';
+        synth.speak(msg);
+      });
+
+      // Reset
+      const resetBtn = document.getElementById('a11y-reset');
+      resetBtn?.addEventListener('click', ()=>{
+        localStorage.removeItem(PREF_KEY);
+        localStorage.removeItem(NUM_KEY);
+        localStorage.removeItem(META_KEY);
+        // quitar clases
+        Object.values(MAP).forEach(cls => root.classList.remove(cls));
+        // reset variables
+        root.style.setProperty('--a11y-font-scale', '100%');
+        root.style.setProperty('--a11y-line', '1.5');
+        root.style.setProperty('--a11y-letter', '0px');
+        // reset UI
+        Object.keys(MAP).forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
+        fontScale.value = 100; outScale.textContent = '100%';
+        line.value = 150; outLine.textContent = '1.50';
+        letter.value = 0; outLetter.textContent = '0 px';
+        if(langSel){ langSel.value = 'es-ES'; root.setAttribute('lang','es-ES'); }
+        alert('Preferencias de accesibilidad restablecidas.');
+      });
+
+      // Reading guide (banda que sigue el cursor)
+      (function(){
+        const guide = document.createElement('div');
+        guide.className = 'reading-guide';
+        document.body.appendChild(guide);
+        document.addEventListener('mousemove', (e)=>{
+          // centra la banda alrededor del cursor
+          guide.style.top = Math.max(0, e.clientY - 24) + 'px';
+        });
+      })();
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

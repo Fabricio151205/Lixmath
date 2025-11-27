@@ -27,14 +27,9 @@ a{text-decoration:none;color:inherit}       /* Quita subrayado a los enlaces y h
 img{max-width:100%;display:block;height:auto}
 /* Evita que las imágenes se desborden del contenedor, las hace block para eliminar “gaps” y mantiene proporción */
 
-.container{width:min(100% - var(--gutter)*2, var(--container));margin-inline:auto}
-/* Contenedor centrado: usa el menor entre ancho máximo (--container) y el 100% menos gutters laterales */
+
 
 .section{padding:48px 0}                    /* Espaciado vertical estándar para secciones (arriba y abajo) */
-
-.row{display:flex;gap:12px}                 /* Utilidad de fila con flex y separación uniforme entre hijos */
-.row.between{justify-content:space-between} /* Distribuye elementos a extremos opuestos (izq/der) */
-.row.center-y{align-items:center}           /* Alinea verticalmente los hijos al centro en el eje Y */
 
 .grid-2{display:grid;grid-template-columns:1fr;gap:24px}
 /* Grid de 2 columnas “colapsado” a 1 columna por defecto (móvil). Gap entre celdas de 24px */
@@ -315,3 +310,76 @@ html.a11y-underline a{ text-decoration: underline !important; }
 @media (prefers-reduced-motion: reduce){ *{ animation: none !important; transition: none !important; } }
 html.a11y-motion *{ animation: none !important; transition: none !important; }
 
+.container{width:min(100% - var(--gutter)*2, var(--container));margin-inline:auto}
+/* Contenedor centrado: usa el menor entre ancho máximo (--container) y el 100% menos gutters laterales */
+
+.row{display:flex;gap:12px}                 /* Utilidad de fila con flex y separación uniforme entre hijos */
+.row.between{justify-content:space-between} /* Distribuye elementos a extremos opuestos (izq/der) */
+.row.center-y{align-items:center}           /* Alinea verticalmente los hijos al centro en el eje Y */
+
+
+/* Colores del menú sobre el degradado */
+.navbar .nav-link{ color:#dbeafe; }
+.navbar .nav-link:hover, .navbar .nav-link:focus, .navbar .nav-link.active{ color:#fff; }
+
+/* Por si algún estilo viejo mete viñetas o fuerza display */
+ul.navbar-nav{ list-style:none; padding-left:0; margin-bottom:0; }
+
+/* Fallback: fuerza el colapso en móvil si alguna regla lo rompe */
+@media (max-width: 991.98px){
+  .navbar .navbar-collapse.collapse{ display:none !important; }
+  .navbar .navbar-collapse.collapse.show{ display:block !important; }
+}
+
+/* Anti scroll horizontal accidental */
+body{ overflow-x:hidden; }
+
+
+
+
+/* ===== Escritorio (≥992px): centrado + acciones a la derecha ===== */
+@media (min-width: 993px){
+  .navbar .container{ position: relative; }
+  .navbar .navbar-collapse{ width:100%; }
+  .navbar .navbar-nav{
+    width:100%;
+    display:flex;
+    justify-content:center;    /* centra: Inicio/¿Cómo usar?/Plantillas/Suscripción */
+    align-items:center;
+    gap:24px;
+  }
+  .navbar .navbar-nav > .d-flex{
+    position:absolute;         /* Login / Carrito pegados a la derecha */
+    right:0;
+    top:50%;
+    transform: translateY(-50%);
+    display:flex; align-items:center; gap:12px;
+  }
+}
+
+/* ===== Móvil (<992px): volver a la izquierda y apilado limpio ===== */
+@media (max-width: 991.98px){
+  .navbar .navbar-collapse{ width:100%; padding:8px 0; }
+  .navbar .navbar-nav{
+    width:100%;
+    display:flex;
+    justify-content:flex-start !important;  /* <-- vuelve a la izquierda */
+    align-items:stretch;
+    gap:10px;
+  }
+  .navbar .nav-item .nav-link{
+    width:100%;
+    padding:12px 8px;                         /* táctil cómodo */
+    text-align:left;                          /* texto a la izquierda */
+  }
+  .navbar .navbar-nav > .d-flex{
+    position:static !important;               /* quita el absolute */
+    transform:none !important;
+    width:100%;
+    justify-content:flex-start;               /* Login y Carrito a la izquierda también */
+    padding-top:6px;
+    gap:12px;
+  }
+  /* Si no quieres que Carrito sea ancho completo en móvil, mantenlo auto */
+  .navbar .btn--primary{ width:auto; }
+}

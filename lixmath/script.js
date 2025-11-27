@@ -5,9 +5,9 @@
    ========================= */
 const DB = {
   products: [
-    { id: 'pav-rig',  name: 'Diseño de Pavimento Rígido', price: 29.9, img: 'https://placehold.co/640x360?text=Pavimento' },
-    { id: 'vigas-2d', name: 'Diseño de Vigas 2D',         price: 24.9, img: 'https://placehold.co/640x360?text=Vigas+2D' },
-    { id: 'col-vias', name: 'Estudios de Vías y Columnas', price: 19.9, img: 'https://placehold.co/640x360?text=Vías+%26+Columnas' }
+    { id: 'pav-rig',  name: 'Diseño de Pavimento Rígido', price: 29.9, img: 'imagenes_plantillas/Diseño_de_columnas.jpeg' },
+    { id: 'vigas-2d', name: 'Diseño de Vigas 2D',         price: 24.9, img: 'imagenes_plantillas/Pavimento_rigido.jpeg' },
+    { id: 'col-vias', name: 'Estudios de Vías y Columnas', price: 19.9, img: 'imagenes_plantillas/Vigas_y_columnas.jpeg' }
   ]
 };
 
@@ -409,3 +409,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
     URL.revokeObjectURL(url);
   });
 })();
+
